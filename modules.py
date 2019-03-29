@@ -60,3 +60,28 @@ def infor(main):
 
     for i in range(len(info)):
         print(info[i], ': ', sheet.cell_value(main, i + 2))
+
+
+def newmarks(w_sheet,sp, wb, stud):
+
+    a = input('Enter the Test Name  : ')
+    w_sheet.write(0, 3 + sp, a)
+    w_sheet.write(0, 9 + sp, 'NULL')  # to store the Null in the test heading column after the 9 positions
+
+    subjects = []  # to store the entered subjects
+
+    for o in range(7):
+
+        if o == 6:
+
+            w_sheet.write(1, o + sp, 'NULL')  # to store the Null in the subjects column after the subjects
+
+        else:
+            a = input('Enter the Subject Names: ')
+            subjects.append(a)
+            w_sheet.write(1, o + sp, a)
+
+    wb.save('studbase.xls')
+    return subjects
+
+
