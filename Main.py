@@ -172,8 +172,12 @@ def iput():
                                 ini += 6
 
                             print('\t\t\tList of tests')
-                            print(tests)
-                            etest = input('Enter the name of the test : ')
+                            #print(tests)
+                            ch=0
+                            for i in range(0,len(tests)-1):
+                                print(i+1,")"+tests[i],sep="")
+                            ch = int(input('Enter your choice: '))
+                            etest = tests[ch-1]
 
                             no = 4  # to place the column in 4 becoz in evey column 4 the test name is stored in xl
 
@@ -328,8 +332,11 @@ def iput():
                                     ini += 6
 
                                 print('\t\t\tList of tests')
-                                print(tests)
-                                etest = input('Enter the name of the test to update: ')
+                                #print(tests)ch=0
+                                for i in range(0,len(tests)-1):
+                                    print(i+1,")"+tests[i],sep="")
+                                ch = int(input('Enter your choice: '))
+                                etest = tests[ch-1]
                                 sname = input('Enter the student roll no. to edit: ')
 
                                 for i in range(marks.nrows):
@@ -407,9 +414,12 @@ def iput():
                             ini += 6
 
                         print('\t\t\tList of tests')
-                        print(tests)
-                        etest = input('Enter the name of the test : ')
-
+                        #print(tests)
+                        ch=0
+                        for i in range(0,len(tests)-1):
+                            print(i+1,")"+tests[i],sep="")
+                        ch = int(input('Enter your choice: '))
+                        etest = tests[ch-1]
                         for i in range(2, marks.nrows):
 
                             te = marks.cell_value(i, 0)
