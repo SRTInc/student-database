@@ -20,7 +20,7 @@ def iput():
 
         print('\t\t\t\t\t\t\t\t\t\tLOGIN')
         user_name = input('User name:  ')  # to get the username
-        pwd = input('Password :  ')  # to get the password
+        pwd = input('Password :  ')  # to get the password  # getpass.getpass('') this method is used to hide the entering password
         found = False  # for verifying the user and pass line no:154 that ask to re enter the user and pass
 
         for i in range(rsheet.nrows):
@@ -296,9 +296,9 @@ def iput():
                                 w_sheet = wb.get_sheet(1)
                                 for i in range(stud):
                                     no = 4001 + i
-                                    print('Enter the mark of Student ' + str(no))
+                                    print('\nEnter the mark of Student ' + str(no))
                                     for j in range(6):
-                                        ma = input('Enter the ' + subjects[j] + ' mark ')
+                                        ma = input('Enter the ' + subjects[j] + ' mark: ')
                                         w_sheet.write(2 + i, j + init, ma)
                                     if no == 4040:
                                         break
@@ -389,6 +389,75 @@ def iput():
                     elif ch == '3':
 
                         print('View mark')
+                        tests = []
+                        l_file = ('studbase.xls')
+
+                        marks = xlrd.open_workbook(l_file)
+                        marks = marks.sheet_by_index(1)
+                        ini = 1
+
+                        while 1:
+
+                            tname = marks.cell_value(0, ini + 3)  # to get the test names
+                            tests.append(tname)  # append it in the tests list
+
+                            if tname == 'NULL':
+                                break
+
+                            ini += 6
+
+                        print('\t\t\tList of tests')
+                        print(tests)
+                        etest = input('Enter the name of the test : ')
+
+                        for i in range(2, marks.nrows):
+
+                            te = marks.cell_value(i, 0)
+                            ro = (str(te)[:4])  # to get the student user no. from the xl
+                            main = i  # it is important to save the data in correct student data
+
+                            # if sname == ro:  # to check the stud user no.
+
+                            no = 4  # to place the column in 4 becoz in evey column 4 the test name is stored in xl
+
+                            while 1:
+
+                                t_name = marks.cell_value(0, no)  # to get the test names
+
+                                if t_name == etest:
+
+                                    sub = -3
+                                    subs = []
+                                    loc = ("studbase.xls")
+                                    wb = xlrd.open_workbook(loc)
+                                    sheet = wb.sheet_by_index(1)
+                                    print('\n', str(sheet.cell_value(main, 0))[:4])
+
+                                    for j in range(6):
+                                        oii = no + sub  # to move the pointer to nxt column(sub)
+                                        bla = sheet.cell_value(1, oii)  # get the sub name
+                                        subs.append(bla)  # store the subject name
+                                        sub += 1
+
+                                    print('\n', subs)
+
+                                    sub = -3
+                                    mark = []
+
+                                    for j in range(6):
+                                        oii = no + sub
+                                        # ma = input('Enter the ' + subs[j] +
+
+                                        mo = sheet.cell_value(main, oii)
+                                        mark.append(mo)
+                                        # print(subs[j], ':', mo)
+                                        sub += 1
+                                    print(mark)
+
+                                    break
+
+                                no += 6  # move to next test
+
                         aprof(user_name, pwd)
 
                     elif ch == '4':
