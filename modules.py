@@ -1,6 +1,5 @@
 from datetime import datetime
 import xlrd
-from xlutils import copy
 
 
 def validate(DOB):
@@ -19,14 +18,12 @@ def validate(DOB):
 def agee(DOB):
 
         check = validate(DOB)
+        print(check)
 
-        if check == True:
+        if check is True:
+
             DOB = DOB.split('-')
             DOB=list(map(int,DOB))
-           # for i in range(len(DOB)):
-            #        temp = DOB[i]
-             #z       DOB[i] = int(temp)
-
             Birth_year = DOB[2]
             current_date = datetime.now()
             current_year = current_date.year
@@ -35,7 +32,7 @@ def agee(DOB):
 
         else:
             print("Entered format is wrong, Re-Enter in this (dd-mm-yyy) format")
-            agee()
+            agee(DOB)
 
 
 def autoage(main):
@@ -53,7 +50,7 @@ def infor(main):
     info = ['Name', 'Exam Roll', 'Gender', 'DOB', 'Address', 'city', 'Postal code', 'State', 'Nationality',
             'Phone No.', 'E-mail', 'Father name', 'Father occupation', 'Mother Name', 'Mother occupation',
             'Annual Income', 'Age']
-    loc = ("studbase.xls")
+    loc = "studbase.xls"
     wb = xlrd.open_workbook(loc)
     sheet = wb.sheet_by_index(0)
     print('\t\t\t\t\tProfile\n\n')
