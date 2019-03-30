@@ -4,6 +4,7 @@ import xlrd
 from xlutils.copy import copy
 
 print('\t\t\t\t\t\tWELCOME TO STUDENT DATABASE MANAGEMENT')
+print('')
 entry = input('\n\nPress \'ENTER\' to continue')
 print('------------------------------------------------------------------------------------------')
 wb = xlrd.open_workbook('studbase.xls')
@@ -153,6 +154,61 @@ def iput():
                         elif opt == '3':
 
                             print('Marks')
+                            tests = []
+                            l_file = ('studbase.xls')
+
+                            marks = xlrd.open_workbook(l_file)
+                            marks = marks.sheet_by_index(1)
+                            ini = 1
+
+                            while 1:
+
+                                tname = marks.cell_value(0, ini + 3)  # to get the test names
+                                tests.append(tname)  # append it in the tests list
+
+                                if tname == 'NULL':
+                                    break
+
+                                ini += 6
+
+                            print('\t\t\tList of tests')
+                            print(tests)
+                            etest = input('Enter the name of the test : ')
+
+                            no = 4  # to place the column in 4 becoz in evey column 4 the test name is stored in xl
+
+                            while 1:
+
+                                t_name = marks.cell_value(0, no)  # to get the test names
+
+                                if t_name == etest:
+
+                                    sub = -3
+                                    subs = []
+                                    loc = ("studbase.xls")
+                                    wb = xlrd.open_workbook(loc)
+                                    sheet = wb.sheet_by_index(1)
+
+                                    for j in range(6):
+                                        oii = no + sub  # to move the pointer to nxt column(sub)
+                                        bla = sheet.cell_value(1, oii)  # get the sub name
+                                        subs.append(bla)  # store the subject name
+                                        sub += 1
+
+                                    print(subs)
+
+                                    sub = -3
+
+                                    for j in range(6):
+                                        oii = no + sub
+                                        # ma = input('Enter the ' + subs[j] + ' mark ')
+                                        mo = sheet.cell_value(main, oii)
+                                        print(subs[j], ':', mo)
+                                        sub += 1
+
+                                    break
+
+                                no += 6
                             pro(user_name, pwd)
 
                         elif opt == '4':
