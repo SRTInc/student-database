@@ -27,6 +27,7 @@ def iput():
             user_no = rsheet.cell_value(i, 0)  # to get the username from the exl sheet
             exl_user = (str(user_no)[:4])  # The user number from the exl is in float form (4001.0) so we take the first  4 values
             exl_pwd = str(rsheet.cell_value(i, 1))  # the password got from the excel
+
             main = i  # it is important to locate the  student or student data
             def pro(a, b):
                     user_name = a
@@ -37,7 +38,7 @@ def iput():
 
                         print('\n------------------------------------------------------------------------------------------\n')
                         print('\t\t\t\tWelcome ', rsheet.cell_value(main, 2))
-                        print('(1) Profile\n(2) Edit Profile\n(3) Marks\n(4) Log out')
+                        print('(1) Profile\n(2) Edit Profile\n(3) Marks\n(4) Change Password\n(5) Log out\n')
                         opt = input('\nEnter your option: ')
 
                         if opt == '1':  # Profile
@@ -154,164 +155,215 @@ def iput():
                             print('Marks')
                             pro(user_name, pwd)
 
+                        elif opt == '4':
+
+                            pswd = input('Enter the New password: ')
+                            rpswd = input('Re-Enter the New password: ')
+                            print(main)
+
+                            if pswd == rpswd:
+                                rb = xlrd.open_workbook('studbase.xls')
+                                wb = copy(rb)
+                                w_sheet = wb.get_sheet(0)
+                                w_sheet.write(main, 1, rpswd)
+                                wb.save('studbase.xls')
+                                pro(user_name, pwd)
+
+
+
                         else:
                             iput()
                             #break
             pro(user_name, pwd)
 
+            if user_name == 'admin' and pwd == str(rsheet.cell_value(1, 0 + 1)):
 
+                found = True
 
+                def aprof(a, b):
 
-            if user_name == 'admin' and str(rsheet.cell_value(1, 0 + 1)):
+                    print('\t\t\t\tWelcome Admin')
+                    print('(1) View Student Profile\n(2) Enter Students Mark\n(3) View Students Marks\n'
+                          '(4) Change Password' '\n(5) Log out\n')
+                    ch = input('Enter the option: ')
 
-                print('\t\t\t\tWelcome Admin')
-                print('(1) View Student Profile\n(2) Enter Students Mark\n(3) View Students Marks\n(4) Log out\n')
-                ch = input('Enter the option: ')
-
-                if ch == '1':
-
-                    loc = ("studbase.xls")
-                    wb = xlrd.open_workbook(loc)
-                    sheet = wb.sheet_by_index(0)
-                    vi = input('Enter the student Username to view profile: ')
-
-                    for i in range(sheet.nrows):  # for iterating the all userno.
-
-                        te = sheet.cell_value(i, 0)  # to get the user number from the xl sheet
-                        ro = (str(te)[:4])
-                        main = i  # it is important to view the data of correct student data
-
-                        if vi == ro:  # to check the userno.
-
-                            infor(main)  # to view the details of the student
-
-                elif ch == '2':
-
-                    print('(1) New Entry\n(2) Update\n(3) Main Menu\n')
-                    mk = input('Enter the option: ')
-
-                    if mk == '1':
+                    if ch == '1':
 
                         loc = ("studbase.xls")
                         wb = xlrd.open_workbook(loc)
-                        sheet = wb.sheet_by_index(1)
-                        found = False
-                        init = 0  # to initialize the column
-                        stud = sheet.nrows
-                        # print(stud)
+                        sheet = wb.sheet_by_index(0)
+                        vi = input('Enter the student Username to view profile: ')
 
-                        while 1:  # this loop is to avoid over writing
+                        for i in range(sheet.nrows):  # for iterating the all userno.
 
-                            a = sheet.cell_value(1, init)
+                            te = sheet.cell_value(i, 0)  # to get the user number from the xl sheet
+                            ro = (str(te)[:4])
+                            main = i  # it is important to view the data of correct student data
 
-                            if a == 'NULL':  # if it find the  Null to stop the iteration
-                                break
+                            if vi == ro:  # to check the userno.
 
-                            init += 1  # to store the Null position
+                                infor(main)  # to view the details of the student
+                                aprof(user_name, pwd)
 
-                        rb = xlrd.open_workbook('studbase.xls')
-                        wb = copy(rb)
-                        w_sheet = wb.get_sheet(1)
-                        print('New Entry')
-                        subjects = newmarks(w_sheet, init, wb, stud)
-                        rb = xlrd.open_workbook('studbase.xls')
-                        wb = copy(rb)
-                        w_sheet = wb.get_sheet(1)
-                        for i in range(stud):
-                            no = 4001 + i
-                            print('Enter the mark of Student ' + str(no))
-                            for j in range(6):
-                                ma = input('Enter the ' + subjects[j] + ' mark ')
-                                w_sheet.write(2 + i, j + init, ma)
-                            if no == 4040:
-                                break
-                        wb.save('studbase.xls')
+                    elif ch == '2':
+                        def menu():
 
-                    elif mk == '2':
+                            print('(1) New Entry\n(2) Update\n(3) Main Menu\n')
+                            mk = input('Enter the option: ')
 
-                        print('Update')
-                        tests = []
-                        l_file = ('studbase.xls')
+                            if mk == '1':
 
-                        marks = xlrd.open_workbook(l_file)
-                        marks = marks.sheet_by_index(1)
-                        ini = 1
+                                loc = ("studbase.xls")
+                                wb = xlrd.open_workbook(loc)
+                                sheet = wb.sheet_by_index(1)
+                                found = False
+                                init = 0  # to initialize the column
+                                stud = sheet.nrows
+                                # print(stud)
 
-                        while 1:
+                                while 1:  # this loop is to avoid over writing
 
-                            tname = marks.cell_value(0, ini + 3)  # to get the test names
-                            tests.append(tname)  # append it in the tests list
+                                    a = sheet.cell_value(1, init)
 
-                            if tname == 'NULL':
+                                    if a == 'NULL':  # if it find the  Null to stop the iteration
+                                        break
 
-                                break
+                                    init += 1  # to store the Null position
 
-                            ini += 6
+                                rb = xlrd.open_workbook('studbase.xls')
+                                wb = copy(rb)
+                                w_sheet = wb.get_sheet(1)
+                                print('New Entry')
+                                subjects = newmarks(w_sheet, init, wb, stud)
+                                rb = xlrd.open_workbook('studbase.xls')
+                                wb = copy(rb)
+                                w_sheet = wb.get_sheet(1)
+                                for i in range(stud):
+                                    no = 4001 + i
+                                    print('Enter the mark of Student ' + str(no))
+                                    for j in range(6):
+                                        ma = input('Enter the ' + subjects[j] + ' mark ')
+                                        w_sheet.write(2 + i, j + init, ma)
+                                    if no == 4040:
+                                        break
+                                wb.save('studbase.xls')
+                                menu()
 
-                        print('\t\t\tList of tests')
-                        print(tests)
-                        etest = input('Enter the name of the test to update: ')
-                        sname = input('Enter the student roll no. to edit: ')
 
-                        for i in range(marks.nrows):
+                            elif mk == '2':
 
-                            te = marks.cell_value(i, 0)
-                            ro = (str(te)[:4])  # to get the student user no. from the xl
-                            main = i  # it is important to save the data in correct student data
+                                print('Update')
+                                tests = []
+                                l_file = ('studbase.xls')
 
-                            if sname == ro:  # to check the stud user no.
-
-                                no = 4  # to place the column in 4 becoz in evey column 4 the test name is stored in xl
+                                marks = xlrd.open_workbook(l_file)
+                                marks = marks.sheet_by_index(1)
+                                ini = 1
 
                                 while 1:
 
-                                    t_name = marks.cell_value(0, no)  # to get the test names
+                                    tname = marks.cell_value(0, ini + 3)  # to get the test names
+                                    tests.append(tname)  # append it in the tests list
 
-                                    if t_name == etest:
+                                    if tname == 'NULL':
 
-                                        sub = -3
-                                        subs = []
-                                        loc = ("studbase.xls")
-                                        wb = xlrd.open_workbook(loc)
-                                        sheet = wb.sheet_by_index(1)
-
-                                        for j in range(6):
-
-                                            oii = no + sub  # to move the pointer to nxt column(sub)
-                                            bla = sheet.cell_value(1, oii)  # get the sub name
-                                            subs.append(bla)  # store the subject name
-                                            sub += 1
-
-                                        print(subs)
-                                        rb = xlrd.open_workbook('studbase.xls')
-                                        wb = copy(rb)
-                                        w_sheet = wb.get_sheet(1)
-                                        sub = -3
-
-                                        for j in range(6):
-
-                                            oii = no + sub
-                                            ma = input('Enter the ' + subs[j] + ' mark ')
-                                            w_sheet.write(main, oii, ma)
-                                            sub += 1
-
-                                        wb.save('studbase.xls')
                                         break
 
-                                    no += 6  # move to next test
+                                    ini += 6
+
+                                print('\t\t\tList of tests')
+                                print(tests)
+                                etest = input('Enter the name of the test to update: ')
+                                sname = input('Enter the student roll no. to edit: ')
+
+                                for i in range(marks.nrows):
+
+                                    te = marks.cell_value(i, 0)
+                                    ro = (str(te)[:4])  # to get the student user no. from the xl
+                                    main = i  # it is important to save the data in correct student data
+
+                                    if sname == ro:  # to check the stud user no.
+
+                                        no = 4  # to place the column in 4 becoz in evey column 4 the test name is stored in xl
+
+                                        while 1:
+
+                                            t_name = marks.cell_value(0, no)  # to get the test names
+
+                                            if t_name == etest:
+
+                                                sub = -3
+                                                subs = []
+                                                loc = ("studbase.xls")
+                                                wb = xlrd.open_workbook(loc)
+                                                sheet = wb.sheet_by_index(1)
+
+                                                for j in range(6):
+
+                                                    oii = no + sub  # to move the pointer to nxt column(sub)
+                                                    bla = sheet.cell_value(1, oii)  # get the sub name
+                                                    subs.append(bla)  # store the subject name
+                                                    sub += 1
+
+                                                print(subs)
+                                                rb = xlrd.open_workbook('studbase.xls')
+                                                wb = copy(rb)
+                                                w_sheet = wb.get_sheet(1)
+                                                sub = -3
+
+                                                for j in range(6):
+
+                                                    oii = no + sub
+                                                    ma = input('Enter the ' + subs[j] + ' mark ')
+                                                    w_sheet.write(main, oii, ma)
+                                                    sub += 1
+
+                                                wb.save('studbase.xls')
+                                                break
+
+                                            no += 6  # move to next test
+                                menu()
+                            else:
+
+                                print('Main menu')
+                                aprof(user_name, pwd)
+                        menu()
+
+
+                    elif ch == '3':
+
+                        print('View mark')
+                        aprof(user_name, pwd)
+
+                    elif ch == '4':
+
+
+                        def cpwd():
+
+                            pswd = input('Enter the New password: ')
+                            rpswd = input('Re-Enter the New password: ')
+
+
+                            if pswd == rpswd:
+                                rb = xlrd.open_workbook('studbase.xls')
+                                wb = copy(rb)
+                                w_sheet = wb.get_sheet(0)
+                                w_sheet.write(1, 1, rpswd)
+                                wb.save('studbase.xls')
+                            else:
+                                print('Password does not matched, Re-enter the new password\n')
+                                cpwd()
+                        cpwd()
+                        pro(user_name, pwd)
+
 
                     else:
+                        iput()
+                aprof(user_name,pwd)
 
-                        print('Main menu')
 
-                elif ch == '3':
-                    print('View mark')
 
-                else:
-                    iput()
 
-                found = True
-                break
 
         if found is False:
 
@@ -326,7 +378,10 @@ def iput():
             else:
 
                 print('\n\t\t\t\tThank You, Good Bye')
+                exit()
 
 
 iput()
+def exit():
+    print('---x-----x----')
 
